@@ -1,33 +1,36 @@
-name: "CD Pipeline"
+name: "Cd Pipeline"
 
 on:
     workflow_run:
-        workflows: ["Sample React CI Pipeline / Workflow"]  # MUST match CI pipeline name exactly
+        workflows: ["Sample React CI Pipeline / Workflow"]
         types:
             - completed
-    workflow_dispatch:  # Allows manual triggering
+    workflow_dispatch:
 
 jobs:
     deploy:
         runs-on: "ubuntu-latest"
         environment: production
-        permissions:
-            actions: read  # Allows downloading artifacts
-            contents: read
-
         steps:
-            - name: "Setup Node.js"
+            - name: "Build Node js"
               uses: actions/setup-node@v4
               with:
                 node-version: '21'
 
-            - name: "Setup Vercel CLI"
+            - name: "Setu[ vercel cli"
               run: npm install -g vercel
 
             - name: "Download Build Files"
               uses: actions/download-artifact@v4
               with:
-                name: build  # Ensure this matches CI artifact name
+                name: build
+                run-id: ${{ github.event.workflow_run.id }}
+                github-token: ${{ github.token }}
 
-            - name: "Deploy to Vercel"
+            - name: "Deploy to vercel"
               run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm --name=cicdproject
+              
+
+           
+
+        
