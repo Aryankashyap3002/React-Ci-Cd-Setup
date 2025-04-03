@@ -1,5 +1,5 @@
 import js from '@eslint/js'
-import globals from 'globals'
+import globals, { jest } from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
@@ -16,7 +16,9 @@ export default [
         sourceType: 'module',
       },
     },
+    "extends": ["plugin:jest/recommended"],
     plugins: {
+      jest,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
@@ -28,6 +30,7 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      
     },
   },
 ]
