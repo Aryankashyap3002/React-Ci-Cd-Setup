@@ -26,3 +26,9 @@ jobs:
             
             - name: "Listing files and folder"
               run: ls
+
+            - name: "Run Tests"
+              run: npm test
+            
+            - name: "Run Build"
+              run: npm run build
