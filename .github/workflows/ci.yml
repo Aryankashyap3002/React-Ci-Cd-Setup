@@ -9,22 +9,26 @@ on:
 jobs:
     build-and-test:
         runs-on: "ubuntu-latest"
+        permissions:
+            actions: write  # Allows uploading artifacts
+            contents: read
+
         steps:
-            - name: "Setup Node js"
+            - name: "Setup Node.js"
               uses: actions/setup-node@v4
               with:
                 node-version: '21'
 
-            - name: "Check Node"
+            - name: "Check Node.js Version"
               run: node --version
 
             - name: "Clone The Project"
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: "Install Dependencies"
               run: npm install
             
-            - name: "Listing files and folder"
+            - name: "Listing Files and Folders"
               run: ls
 
             - name: "Run Lint"
@@ -36,8 +40,12 @@ jobs:
             - name: "Run Build"
               run: npm run build
 
-            - name: "Upload product ready build files"
+            - name: "Check if build folder exists"
+              run: ls -la dist || echo "No build files found!"
+
+            - name: "Upload Product Ready Build Files"
               uses: actions/upload-artifact@v4
               with:
                 name: build
-                path: dist 
+                path: dist
+                retention-days: 5  # Keep artifacts for 5 days
